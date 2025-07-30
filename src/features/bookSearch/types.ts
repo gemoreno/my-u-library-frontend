@@ -4,6 +4,8 @@ export interface Book {
   author: string;
   genre: string;
   year_published?: string;
+  stock: string;
+  available: string;
 }
 
 export interface BookFilters {
