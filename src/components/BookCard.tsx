@@ -1,35 +1,67 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card"
-import type { Book } from "@/features/bookSearch/types"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { checkoutBook } from "@/features/bookSearch/bookApi"
+import { useState } from "react"
 
 interface BookCardProps {
-  book: Book
+  book: {
+    id: number,
+    title: string
+    author: string
+    genre: string
+    year_published?: string
+    stock: number
+    available: number
+  }
 }
 
 export default function BookCard({ book }: BookCardProps) {
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
+
+  const handleCheckout = async () => {
+    try {
+      setLoading(true)
+      await checkoutBook(book.id)
+      setMessage("Checked out!")
+      // Optional: trigger parent refresh
+    } catch (err: any) {
+      setMessage(err.response?.data?.error || "Error")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <Card className="gap-2 py-3">
-      <CardHeader>
-        <CardTitle>{book.title}</CardTitle>
-        <CardDescription>
-          by {book.author} &middot; {book.genre}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm">
-            <span>
+    <Card className="py-3 pr-6">
+      <div className="flex items-center justify-between ">
+        <div>
+          <CardHeader className="pb-2">
+            <CardTitle>{book.title}</CardTitle>
+            <CardDescription>
+              by {book.author} &middot; {book.genre}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-sm">
+              <span>
                 Published: {book.year_published ? book.year_published : "????"}
-            </span>
-            <span className="ml-6">
-                ({book.stock} {book.stock == '1' ? 'copy' : 'copies'}, {book.available} available)
-            </span>
-        </p>
-      </CardContent>
+              </span>
+              <span className="ml-6">
+                ({book.stock} {book.stock === 1 ? "copy" : "copies"},{" "}
+                {book.available} available)
+              </span>
+            </p>
+          </CardContent>
+        </div>
+        <Button
+          variant="outline"
+          onClick={handleCheckout}
+          disabled={loading || book.available === 0}
+        >
+          {loading ? "Processing" : "Checkout"}
+        </Button>
+      </div>
     </Card>
   )
 }

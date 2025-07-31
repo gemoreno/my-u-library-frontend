@@ -11,3 +11,8 @@ export async function fetchBooks(filters: BookFilters): Promise<Book[]> {
   const res = await api.get<Book[]>(`/books/?${params.toString()}`);
   return res.data;
 }
+
+export async function checkoutBook(bookId: number) {
+  const res = await api.post(`/checkout/${bookId}/`)
+  return res.data
+}
