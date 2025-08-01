@@ -6,24 +6,23 @@ import { Label } from "@/components/ui/label"
 import { loginUser } from "@/features/auth/authApi"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch } from "@/store"
-import type { RootState } from "@/store"
-import { logout } from "@/features/auth/authSlice"
+import { logout, selectIsLoggedIn } from "@/features/auth/authSlice"
 
 export default function LoginDialog() {
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isOpen, setIsOpen] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
 
-  const isLoggedIn = useSelector((state: RootState) => !!state.auth.accessToken)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
 
     try {
-      await dispatch(loginUser(username, password))
+      await dispatch(loginUser(email, password))
 
       setIsOpen(false)
     } catch (err: any) {
@@ -51,11 +50,11 @@ export default function LoginDialog() {
           </DialogHeader>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <Label htmlFor="username" className="mb-2">Username</Label>
+              <Label htmlFor="email" className="mb-2">Email</Label>
               <Input
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>

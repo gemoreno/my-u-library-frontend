@@ -3,11 +3,11 @@ import { loginFailure, loginStart, loginSuccess } from "./authSlice"
 import api from "@/lib/axios"
 import { clearTokens, getRefreshToken, saveTokens } from "./authUtils"
 
-export const loginUser = (username: string, password: string) => async (dispatch: AppDispatch) => {
+export const loginUser = (email: string, password: string) => async (dispatch: AppDispatch) => {
   dispatch(loginStart())
 
   try {
-    const res = await api.post(`/token/`, { username, password })
+    const res = await api.post(`/token/`, { email, password })
     const accessToken = res.data.access
     const refreshToken = res.data.refresh
 
