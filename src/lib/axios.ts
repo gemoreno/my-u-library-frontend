@@ -1,15 +1,14 @@
-import axios from "axios"
-import { store } from "@/store"
+import axios from "axios";
+import { tryRefreshToken } from "@/features/auth/authApi";
+import { getAccessToken } from "@/features/auth/authUtils";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/", // or your actual API base URL
-})
+  baseURL: "http://127.0.0.1:8000/api",
+});
 
-// Add token to every request automatically
 api.interceptors.request.use(
   (config) => {
-    const state = store.getState()
-    const token = state.auth.accessToken
+    const token = getAccessToken()
 
     const publicEndpoints = [
       "/books/",
@@ -19,7 +18,7 @@ api.interceptors.request.use(
       config.url?.startsWith(endpoint)
     );
     
-    if (token && !isPublic) {
+    if (token && !isPublic && config.url && !config.url.startsWith("/token")) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -30,4 +29,28 @@ api.interceptors.request.use(
   }
 )
 
-export default api
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const newToken = await tryRefreshToken();
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default api;
