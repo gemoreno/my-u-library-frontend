@@ -11,8 +11,16 @@ api.interceptors.request.use(
     const state = store.getState()
     const token = state.auth.accessToken
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+    const publicEndpoints = [
+      "/books/",
+    ];
+
+    const isPublic = publicEndpoints.some((endpoint) =>
+      config.url?.startsWith(endpoint)
+    );
+    
+    if (token && !isPublic) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config
