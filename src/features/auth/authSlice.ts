@@ -1,6 +1,6 @@
+import type { RootState } from "@/store"
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-
 
 interface AuthState {
   accessToken: string | null
@@ -45,6 +45,8 @@ const authSlice = createSlice({
     },
   },
 })
+
+export const selectIsLoggedIn = (state: RootState) => !!state.auth.accessToken
 
 export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions
 

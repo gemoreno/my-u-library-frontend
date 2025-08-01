@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { selectIsLoggedIn } from "@/features/auth/authSlice";
 import { checkoutBook } from "@/features/bookSearch/bookApi"
 import { useState } from "react"
+import { useSelector } from "react-redux";
 
 interface BookCardProps {
   book: {
@@ -19,6 +21,7 @@ interface BookCardProps {
 export default function BookCard({ book, updateBookAvailability }: BookCardProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const handleCheckout = async () => {
     try {
@@ -60,6 +63,7 @@ export default function BookCard({ book, updateBookAvailability }: BookCardProps
           variant="outline"
           onClick={handleCheckout}
           disabled={loading || book.available === 0}
+          hidden={!isLoggedIn}
         >
           {loading ? "Processing" : "Checkout"}
         </Button>
