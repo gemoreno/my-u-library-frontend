@@ -1,6 +1,7 @@
 import type { AppDispatch } from "@/store"
 import { loginFailure, loginStart, loginSuccess } from "./authSlice"
 import api from "@/lib/axios"
+import { clearTokens, getRefreshToken, saveTokens } from "./authUtils"
 
 export const loginUser = (username: string, password: string) => async (dispatch: AppDispatch) => {
   dispatch(loginStart())
@@ -10,8 +11,7 @@ export const loginUser = (username: string, password: string) => async (dispatch
     const accessToken = res.data.access
     const refreshToken = res.data.refresh
 
-    localStorage.setItem("accessToken", accessToken)
-    localStorage.setItem("refreshToken", refreshToken)
+    saveTokens(accessToken, refreshToken)
 
     dispatch(loginSuccess({ accessToken, refreshToken }))
   } catch (err: any) {
@@ -22,8 +22,25 @@ export const loginUser = (username: string, password: string) => async (dispatch
 
 
 export const logoutUser = () => (dispatch: AppDispatch) => {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
-
+  clearTokens();
   dispatch(logoutUser());
 };
+
+
+export async function tryRefreshToken() {
+  const refresh = getRefreshToken();
+  if (!refresh) throw new Error("No refresh token");
+
+  try {
+    const res = await api.post("/token/refresh/", {
+      refresh,
+    });
+
+    const newAccess = res.data.access;
+    saveTokens(newAccess, refresh);
+    return newAccess;
+  } catch (err) {
+    clearTokens();
+    throw err;
+  }
+}

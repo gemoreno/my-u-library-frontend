@@ -22,8 +22,8 @@ export default function BookSearch() {
   };
 
   return (
-    <div>
-      <div className="flex justify-between px-6 py-2">
+    <div className="px-6">
+      <div className="flex justify-between py-2">
         <div className="flex gap-2">
           <Input name="title" placeholder="Title" onChange={handleChange} />
           <Input name="author" placeholder="Author" onChange={handleChange} />
