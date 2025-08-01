@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { USER_ROLES } from "@/constants";
 import { selectCurrentUser, selectIsLoggedIn } from "@/features/auth/authSlice";
 import { checkoutBook } from "@/features/checkoutManagement/checkoutApi";
 import { useState } from "react"
@@ -14,21 +15,30 @@ interface BookCardProps {
     year_published?: string
     stock: number
     available: number
+    checkout_date?: string
   };
-  updateBookAvailability: (BookId: number) => void
+  isCheckedOut?: Boolean;
+  updateBookAvailability?: (BookId: number) => void;
 }
 
-export default function BookCard({ book, updateBookAvailability }: BookCardProps) {
+export default function BookCard({ book, isCheckedOut, updateBookAvailability }: BookCardProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
-  const isLoggedIn = useSelector(selectIsLoggedIn)
   const userRole = useSelector(selectCurrentUser)?.role
+
+  const formattedCheckoutDate = book.checkout_date
+  ? new Date(book.checkout_date).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  : "N/A";
 
   const handleCheckout = async () => {
     try {
       setLoading(true)
       await checkoutBook(book.id)
-      updateBookAvailability(book.id)
+      updateBookAvailability ? updateBookAvailability(book.id) : {}
       setMessage("Checked out!")
     } catch (err: any) {
       setMessage(err.response?.data?.error || "Error")
@@ -52,19 +62,24 @@ export default function BookCard({ book, updateBookAvailability }: BookCardProps
               <span>
                 Published: {book.year_published ? book.year_published : "????"}
               </span>
-              <span className="ml-6">
-                ({book.stock} {book.stock === 1 ? "copy" : "copies"},{" "}
-                {book.available} available)
-              </span>
+              {!isCheckedOut
+                ? <span className="ml-6">
+                    ({book.stock} {book.stock === 1 ? "copy" : "copies"},{" "}
+                    {book.available} available)
+                  </span>
+                : <span className="ml-6">
+                    Checkout date: {formattedCheckoutDate}
+                  </span>
+              }
             </p>
           </CardContent>
         </div>
-        { userRole==='student' 
+        { userRole===USER_ROLES.STUDENT
         ? <Button
           variant="outline"
           onClick={handleCheckout}
           disabled={loading || book.available === 0}
-          hidden={!isLoggedIn}
+          hidden={!!isCheckedOut}
           >
             {loading ? "Processing" : "Checkout"}
           </Button>

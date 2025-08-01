@@ -1,0 +1,25 @@
+import { useState } from "react";
+import BookList from "@/components/BookList";
+import { useBooks } from "./useBooks";
+import type { BookFilters } from "@/components/BookFilterBar";
+import BookFilterBar from "@/components/BookFilterBar";
+
+export default function BookSearch() {
+  const [filters, setFilters] = useState<BookFilters>({});
+  const { books, loading, error, searchBooks, updateBookAvailability } = useBooks();
+
+  const handleChange = (filterValues: BookFilters) => {
+    setFilters(filterValues);
+  };
+
+  const handleSearch = () => {
+    searchBooks(filters);
+  };
+
+  return (
+    <div>
+      <BookFilterBar className={"mb-4"} filters={filters} onFiltersChange={handleChange} onSearch={handleSearch}/>
+      <BookList books={books} isMyCheckoutsPage={false} updateBookAvailability={updateBookAvailability}/>
+    </div>
+  );
+}

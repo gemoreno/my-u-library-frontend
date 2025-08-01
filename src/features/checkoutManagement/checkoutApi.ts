@@ -3,7 +3,7 @@ import type { CheckoutFilters, CheckoutRecord } from "./types";
 
 
 export async function checkoutBook(bookId: number) {
-  const res = await api.post(`/checkout/checkout_book/${bookId}/`)
+  const res = await api.post(`/checkouts/checkout_book/${bookId}/`)
   return res.data
 }
 

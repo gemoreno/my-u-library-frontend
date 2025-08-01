@@ -1,3 +1,5 @@
+import type { User } from "./types";
+
 export function getAccessToken(): string | null {
   return localStorage.getItem("accessToken");
 }
@@ -14,4 +16,12 @@ export function saveTokens(access: string, refresh: string) {
 export function clearTokens() {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
+}
+
+export function saveCurrentUser(user: User) {
+  localStorage.setItem('currentUser', JSON.stringify(user));
+}
+
+export function clearCurrentUser() {
+  localStorage.removeItem("currentUser");
 }

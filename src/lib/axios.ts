@@ -6,6 +6,15 @@ const api = axios.create({
   baseURL: "http://127.0.0.1:8000/api",
 });
 
+function getPathFromUrl(fullUrl: string): string {
+  try {
+    const baseURL = window.location.origin; 
+    return new URL(fullUrl, baseURL).pathname;
+  } catch {
+    return fullUrl;
+  }
+}
+
 api.interceptors.request.use(
   (config) => {
     const token = getAccessToken()
@@ -14,11 +23,10 @@ api.interceptors.request.use(
       "/books/",
     ];
 
-    const isPublic = publicEndpoints.some((endpoint) =>
-      config.url?.startsWith(endpoint)
-    );
+    const urlPath = getPathFromUrl(config.url || "");
+    const isPublic = publicEndpoints.some(publicPath => publicPath === urlPath);
     
-    if (token && !isPublic && config.url && !config.url.startsWith("/token")) {
+    if (token && !isPublic && config.url) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
