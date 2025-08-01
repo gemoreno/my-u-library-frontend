@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { selectIsLoggedIn } from "@/features/auth/authSlice";
+import { selectCurrentUser, selectIsLoggedIn } from "@/features/auth/authSlice";
 import { checkoutBook } from "@/features/bookSearch/bookApi"
 import { useState } from "react"
 import { useSelector } from "react-redux";
@@ -22,6 +22,7 @@ export default function BookCard({ book, updateBookAvailability }: BookCardProps
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const isLoggedIn = useSelector(selectIsLoggedIn)
+  const userRole = useSelector(selectCurrentUser)?.role
 
   const handleCheckout = async () => {
     try {
@@ -59,14 +60,16 @@ export default function BookCard({ book, updateBookAvailability }: BookCardProps
             </p>
           </CardContent>
         </div>
-        <Button
+        { userRole==='student' 
+        ? <Button
           variant="outline"
           onClick={handleCheckout}
           disabled={loading || book.available === 0}
           hidden={!isLoggedIn}
-        >
-          {loading ? "Processing" : "Checkout"}
-        </Button>
+          >
+            {loading ? "Processing" : "Checkout"}
+          </Button>
+        : <></>}
       </div>
     </Card>
   )

@@ -2,18 +2,22 @@ import type { AppDispatch } from "@/store"
 import { loginFailure, loginStart, loginSuccess } from "./authSlice"
 import api from "@/lib/axios"
 import { clearTokens, getRefreshToken, saveTokens } from "./authUtils"
+import type { User } from "./types"
 
 export const loginUser = (email: string, password: string) => async (dispatch: AppDispatch) => {
   dispatch(loginStart())
 
   try {
-    const res = await api.post(`/token/`, { email, password })
-    const accessToken = res.data.access
-    const refreshToken = res.data.refresh
-
+    const tokenRes = await api.post(`/token/`, { email, password })
+    const accessToken = tokenRes.data.access
+    const refreshToken = tokenRes.data.refresh
     saveTokens(accessToken, refreshToken)
 
-    dispatch(loginSuccess({ accessToken, refreshToken }))
+    const userRes = await api.get<User>("/auth/me/", {})
+    const user = userRes.data
+
+    
+    dispatch(loginSuccess({ accessToken, refreshToken, user}))
   } catch (err: any) {
     dispatch(loginFailure("Login failed. Please check your credentials."))
     throw err
