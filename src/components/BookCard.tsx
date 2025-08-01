@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { selectCurrentUser, selectIsLoggedIn } from "@/features/auth/authSlice";
-import { checkoutBook } from "@/features/bookSearch/bookApi"
+import { checkoutBook } from "@/features/checkoutManagement/checkoutApi";
 import { useState } from "react"
 import { useSelector } from "react-redux";
 
@@ -30,7 +30,6 @@ export default function BookCard({ book, updateBookAvailability }: BookCardProps
       await checkoutBook(book.id)
       updateBookAvailability(book.id)
       setMessage("Checked out!")
-      // Optional: trigger parent refresh
     } catch (err: any) {
       setMessage(err.response?.data?.error || "Error")
     } finally {
