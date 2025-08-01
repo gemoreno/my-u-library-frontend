@@ -12,10 +12,11 @@ interface BookCardProps {
     year_published?: string
     stock: number
     available: number
-  }
+  };
+  updateBookAvailability: (BookId: number) => void
 }
 
-export default function BookCard({ book }: BookCardProps) {
+export default function BookCard({ book, updateBookAvailability }: BookCardProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
 
@@ -23,6 +24,7 @@ export default function BookCard({ book }: BookCardProps) {
     try {
       setLoading(true)
       await checkoutBook(book.id)
+      updateBookAvailability(book.id)
       setMessage("Checked out!")
       // Optional: trigger parent refresh
     } catch (err: any) {

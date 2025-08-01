@@ -21,5 +21,15 @@ export function useBooks() {
     }
   };
 
-  return { books, loading, error, searchBooks };
+  const updateBookAvailability = (bookId: number) => {
+    setBooks(prev =>
+      prev.map(book =>
+        book.id === bookId
+          ? { ...book, available: book.available - 1}
+          : book
+      )
+    )
+  }
+
+  return { books, loading, error, searchBooks, updateBookAvailability };
 }
