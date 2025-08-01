@@ -6,7 +6,7 @@ import BookList from "@/components/BookList";
 
 export default function MyCheckoutsPage() {
   const [filters, setFilters] = useState<BookFilters>({});
-    const { books, loading, error, searchCheckedoutBooks } = useBooks();
+  const { books, loading, error, searchCheckedoutBooks } = useBooks();
 
   const handleChange = (filterValues: BookFilters) => {
     setFilters(filterValues);
