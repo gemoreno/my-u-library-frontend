@@ -1,6 +1,6 @@
 // useBooks.ts
 import { useState } from "react";
-import { fetchBooks, fetchCheckedoutBooks } from "./bookApi";
+import { addBook, fetchBooks, fetchCheckedoutBooks, type NewBookData } from "./bookApi";
 import type { BookFilters } from "@/components/BookFilterBar";
 
 export interface Book {
@@ -55,5 +55,17 @@ export function useBooks() {
     }
   };
 
-  return { books, loading, error, searchBooks, searchCheckedoutBooks, updateBookAvailability };
+  const createBook = async (newBook: NewBookData) => {
+    setLoading(true);
+    try {
+      const createdBook = await addBook(newBook);
+      setBooks((books) => [...books, createdBook]);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { books, loading, error, searchBooks, createBook, searchCheckedoutBooks, updateBookAvailability };
 }
