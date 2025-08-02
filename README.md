@@ -7,7 +7,7 @@ This is the frontend for **My U Library**, a simple library management system bu
 ## 🚀 Tech Stack
 
 - ⚛️ React 18 + TypeScript
-- 🧠 Redux Toolkit (authentication, state management)
+- 🧠 Redux Toolkit (authentication and current user state)
 - 🔐 JWT Auth with role-based access
 - 🎨 Tailwind CSS + shadcn/ui (accessible components)
 - 🔁 Axios (API integration)
@@ -50,14 +50,15 @@ my-u-lib-front/
 ## 🧪 Features
 
 | Feature                         | Roles              |
-|----------------------------------|---------------------|
-| 🔐 Email/password login         | All users           |
-| 🧾 View personal checkouts      | Student, Librarian  |
-| 📚 Search and view books        | All users           |
-| ➕ Add books                    | Librarian only      |
-| 🔄 Checkout / Return books     | Librarian only      |
-| 👤 Add new users                | Admin, Librarian    |
-| 📋 View all checkouts          | Librarian only      |
+|---------------------------------|--------------------|
+| 🔐 Email/password login         | All users          |
+| 🧾 View personal checkouts      | Student only       |
+| 📚 Search and view books        | All users          |
+| ➕ Add books                    | Librarian only     |
+| ↗️ Checkout books               | Student only       |
+| 🔄 Return books                 | Librarian only     |
+| 👤 Add new users                | Librarian only     |
+| 📋 View all checkouts           | Librarian only     |
 
 Role-based routing ensures users only see and access what’s relevant.
 
@@ -83,7 +84,7 @@ npm install
 Create a `.env` file:
 
 ```env
-VITE_API_URL=http://localhost:8000/api
+VITE_API_BASE_URL=http://localhost:8000/api
 ```
 
 Update the URL if your backend is deployed on Render.
@@ -104,20 +105,18 @@ To deploy the frontend:
 
 1. Push to GitHub
 2. Create a new **Web Service** in [Render](https://render.com/)
-3. Set `buildCommand` and `startCommand`:
+3. Set `Build Command` and `Publish Directory`:
 
 ```yaml
-buildCommand: npm install && npm run build
-startCommand: npm run preview
+buildCommand: npm install; npm run build
+publishDirectory: dist
 ```
 
 4. Add environment variable:
 
 ```
-VITE_API_URL=https://your-backend-url.onrender.com/api
+VITE_API_BASE_URL=https://your-backend-url.onrender.com/api
 ```
-
-> ✅ Use `vite.config.ts` and `import.meta.env` to reference environment vars.
 
 ---
 
@@ -129,7 +128,6 @@ VITE_API_URL=https://your-backend-url.onrender.com/api
 - `jwt-decode`
 - `tailwindcss`
 - `shadcn/ui`
-- `clsx` / `classnames`
 
 ---
 
