@@ -7,6 +7,7 @@ import { loginUser } from "@/features/auth/authApi"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch } from "@/store"
 import { logout, selectIsLoggedIn } from "@/features/auth/authSlice"
+import { useNavigate } from "react-router-dom"
 
 export default function LoginDialog() {
   const [email, setEmail] = useState("")
@@ -16,6 +17,7 @@ export default function LoginDialog() {
   const dispatch = useDispatch<AppDispatch>()
 
   const isLoggedIn = useSelector(selectIsLoggedIn)
+  const navigate = useNavigate()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,6 +34,7 @@ export default function LoginDialog() {
 
   const  handleLogout = () => {
     dispatch(logout())
+    navigate('/')
   }
 
   return (
