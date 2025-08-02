@@ -46,7 +46,7 @@ export function useCheckouts() {
         if (filterValue === undefined || filterValue === null) return true;
 
         const recordValue = record[key as keyof CheckoutRecordFilters];
-        // Handle boolean filter (like 'returned')
+        
         if (typeof filterValue === "boolean") {
           console.log(record)
           console.log(`recordValue=${recordValue}; filterValue=${filterValue}; r===f=${recordValue === !!filterValue}`)
@@ -73,5 +73,5 @@ export function useCheckouts() {
     setCheckouts((prev) => prev.filter((c) => c.id !== id));
   };
 
-  return { checkouts, allCheckouts, loading, error, filterCheckouts, returnBook };
+  return { checkouts, allCheckouts, loading, error, fetchCheckouts, filterCheckouts, returnBook };
 }
