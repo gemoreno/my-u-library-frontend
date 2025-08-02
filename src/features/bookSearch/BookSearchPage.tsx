@@ -18,6 +18,7 @@ export default function BookSearch() {
 
   return (
     <div>
+      <h1 className="text-center text-xl font-bold text-blue-800 mb-4">Book Search</h1>
       <BookFilterBar className={"mb-4"} filters={filters} onFiltersChange={handleChange} onSearch={handleSearch}/>
       <BookList books={books} isMyCheckoutsPage={false} updateBookAvailability={updateBookAvailability}/>
     </div>

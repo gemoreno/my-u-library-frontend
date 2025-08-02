@@ -73,5 +73,5 @@ export function useCheckouts() {
     setCheckouts((prev) => prev.filter((c) => c.id !== id));
   };
 
-  return { checkouts, loading, error, filterCheckouts, returnBook };
+  return { checkouts, allCheckouts, loading, error, filterCheckouts, returnBook };
 }

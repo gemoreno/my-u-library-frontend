@@ -1,10 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useCheckouts } from "./useCheckouts"
 import CheckoutRecordTable, { type CheckoutRecordFilters } from "@/components/CheckoutRecordTable";
 
 export default function LibrarianDashboard() {
-  const { checkouts, loading, error, filterCheckouts, returnBook } = useCheckouts();
-  const [filters, setFilters] = useState<Partial<CheckoutRecordFilters>>({});
+  const [filters, setFilters] = useState<Partial<CheckoutRecordFilters>>({
+    returned: false,
+  });
+  const { checkouts, allCheckouts, loading, error, filterCheckouts, returnBook } = useCheckouts();
+
+  const [filteredReady, setFilteredReady] = useState(false);
+
+  useEffect(() => {
+    if (allCheckouts.length > 0) {
+      filterCheckouts(filters);
+      setFilteredReady(true);
+    }
+  }, [allCheckouts]);
 
   const handleFiltersChange = (newFilters: typeof filters) => {
     setFilters(newFilters);
@@ -14,7 +25,14 @@ export default function LibrarianDashboard() {
 
   return (
     <div>
-      <CheckoutRecordTable checkouts={checkouts} filters={filters} onFiltersChange={handleFiltersChange} onReturn={returnBook}/>
+      <h1 className="text-center text-xl font-bold text-blue-800 mb-4">All Checkouts</h1>
+      {filteredReady ? 
+      <CheckoutRecordTable 
+        checkouts={checkouts} 
+        filters={filters} 
+        onFiltersChange={handleFiltersChange} 
+        onReturn={returnBook}
+      /> : <></>}
     </div>
   )
 }
