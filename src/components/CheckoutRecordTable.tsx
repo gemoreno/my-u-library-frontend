@@ -19,9 +19,9 @@ interface CheckoutTableProps {
 }
 
 const filterableColumns = [
-  { key: "user_first_name", placeholder: "First Name", inputType: "text" },
-  { key: "user_last_name", placeholder: "Last Name", inputType: "text" },
-  { key: "user_email", placeholder: "Email", inputType: "text" },
+  { key: "user_first_name", placeholder: "Student First Name", inputType: "text" },
+  { key: "user_last_name", placeholder: "Student Last Name", inputType: "text" },
+  { key: "user_email", placeholder: "Student Email", inputType: "text" },
   { key: "book_title", placeholder: "Book Title", inputType: "text" },
   { key: "returned", placeholder: "Returned", inputType: "checkbox" },
 ] as const;
