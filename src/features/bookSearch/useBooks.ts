@@ -60,8 +60,9 @@ export function useBooks() {
     try {
       const createdBook = await addBook(newBook);
       setBooks((books) => [...books, createdBook]);
-    } catch (err) {
-      setError(err as Error);
+      alert("Book created successfully.");
+    } catch (err: any) {
+      alert(`Error creating user. ${err.message}`);
     } finally {
       setLoading(false);
     }

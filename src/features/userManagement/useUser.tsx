@@ -20,7 +20,7 @@ export function useUser() {
       await addUser(newUser);
       alert("User created successfully.");
     } catch (err: any) {
-      setError(err.message);
+      alert(`Error creating user. ${err.message}`);
     } finally {
       setLoading(false);
     }

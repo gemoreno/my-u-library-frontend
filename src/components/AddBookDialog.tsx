@@ -45,7 +45,11 @@ export default function AddBookDialog({ onAddBook, loading }: AddBookDialogProps
           <Input placeholder="genre" value={newBook.genre} onChange={(e) => handleChange(e.target.value, 'genre')} />
           <Input placeholder="year_published" value={newBook.year_published} onChange={(e) => handleChange(e.target.value, 'year_published')} />
           <Input placeholder="stock" value={newBook.stock} onChange={(e) => handleChange(e.target.value, 'stock')} />
-          <Button onClick={() => onAddBook(newBook)} disabled={loading}>
+          <Button 
+            onClick={async () => {
+              await onAddBook(newBook)
+              setNewBook(initNewBook)}} 
+            disabled={loading}>
             {loading ? "Adding..." : "Add Book"}
           </Button>
         </div>

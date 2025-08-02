@@ -75,7 +75,6 @@ export default function AddUserDialog({ onAddUser, loading }: AddUserDialogProps
           >
             <option value="student">Student</option>
             <option value="librarian">Librarian</option>
-            <option value="admin">Admin</option>
           </select>
           <Input
             placeholder="Password"
@@ -84,7 +83,11 @@ export default function AddUserDialog({ onAddUser, loading }: AddUserDialogProps
             onChange={(e) => handleChange(e.target.value, "password")}
           />
 
-          <Button onClick={() => onAddUser(newUser)} disabled={loading}>
+          <Button 
+            onClick={async () => {
+              await onAddUser(newUser)
+              setNewUser(initUser)}} 
+            disabled={loading}>
             {loading ? "Creating..." : "Create User"}
           </Button>
         </div>

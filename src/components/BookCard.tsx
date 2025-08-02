@@ -5,6 +5,7 @@ import { selectCurrentUser } from "@/features/auth/authSlice";
 import { checkoutBook } from "@/features/checkoutManagement/checkoutApi";
 import { useState } from "react"
 import { useSelector } from "react-redux";
+import { FaSpinner } from "react-icons/fa";
 
 interface BookCardProps {
   book: {
@@ -38,6 +39,8 @@ export default function BookCard({ book, isCheckedOut, updateBookAvailability }:
       setLoading(true)
       await checkoutBook(book.id)
       updateBookAvailability ? updateBookAvailability(book.id) : {}
+    } catch (err: any) {
+      alert('Error: Only one copy can be checked out per book.')
     } finally {
       setLoading(false)
     }
@@ -70,16 +73,19 @@ export default function BookCard({ book, isCheckedOut, updateBookAvailability }:
             </p>
           </CardContent>
         </div>
-        { userRole===USER_ROLES.STUDENT
-        ? <Button
+        { userRole===USER_ROLES.STUDENT &&
+        (loading ?
+        <div className="flex justify-center items-center mr-5">
+          <FaSpinner className="animate-spin text-green-500 text-5xl" />
+        </div>
+        : <Button
           variant="outline"
           onClick={handleCheckout}
           disabled={loading || book.available === 0}
           hidden={!!isCheckedOut}
-          >
-            {loading ? "Processing" : "Checkout"}
-          </Button>
-        : <></>}
+        >
+          {loading ? "Processing" : "Checkout"}
+        </Button>)}
       </div>
     </Card>
   )
