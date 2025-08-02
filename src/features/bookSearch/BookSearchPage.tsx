@@ -10,7 +10,7 @@ import type { NewBookData } from "./bookApi";
 
 export default function BookSearch() {
   const [filters, setFilters] = useState<BookFilters>({});
-  const { books, loading, error, searchBooks, updateBookAvailability, createBook } = useBooks();
+  const { books, loading, searchBooks, updateBookAvailability, createBook } = useBooks();
   const [ hasSearched, setHasSearched ] = useState<boolean>(false);
 
   const userRole = useSelector(selectCurrentUser)?.role

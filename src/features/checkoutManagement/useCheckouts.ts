@@ -28,7 +28,7 @@ export function useCheckouts() {
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchCheckouts({});
+        const data = await fetchCheckouts();
         setAllCheckouts(data);
         setCheckouts(data);
       } catch (err) {

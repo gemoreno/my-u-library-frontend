@@ -7,7 +7,7 @@ export default function LibrarianDashboard() {
   const [filters, setFilters] = useState<Partial<CheckoutRecordFilters>>({
     returned: false,
   });
-  const { checkouts, allCheckouts, loading, error, filterCheckouts, returnBook } = useCheckouts();
+  const { checkouts, allCheckouts, loading, filterCheckouts, returnBook } = useCheckouts();
 
   const [filteredReady, setFilteredReady] = useState(false);
 

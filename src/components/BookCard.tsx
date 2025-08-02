@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { USER_ROLES } from "@/constants";
-import { selectCurrentUser, selectIsLoggedIn } from "@/features/auth/authSlice";
+import { selectCurrentUser } from "@/features/auth/authSlice";
 import { checkoutBook } from "@/features/checkoutManagement/checkoutApi";
 import { useState } from "react"
 import { useSelector } from "react-redux";
@@ -23,7 +23,6 @@ interface BookCardProps {
 
 export default function BookCard({ book, isCheckedOut, updateBookAvailability }: BookCardProps) {
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
   const userRole = useSelector(selectCurrentUser)?.role
 
   const formattedCheckoutDate = book.checkout_date
@@ -39,9 +38,6 @@ export default function BookCard({ book, isCheckedOut, updateBookAvailability }:
       setLoading(true)
       await checkoutBook(book.id)
       updateBookAvailability ? updateBookAvailability(book.id) : {}
-      setMessage("Checked out!")
-    } catch (err: any) {
-      setMessage(err.response?.data?.error || "Error")
     } finally {
       setLoading(false)
     }

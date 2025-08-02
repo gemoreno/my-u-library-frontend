@@ -13,7 +13,7 @@ export interface NewUserData {
   email: string;
   first_name: string;
   last_name: string;
-  role: "librarian" | "student" | "admin";
+  role: "librarian" | "student";
   password: string;
 }
 

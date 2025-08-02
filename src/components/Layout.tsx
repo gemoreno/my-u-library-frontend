@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '@/features/auth/authSlice'
 import LoginDialog from './LoginDialog'
