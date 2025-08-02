@@ -7,7 +7,7 @@ export async function checkoutBook(bookId: number) {
 }
 
 export async function fetchCheckouts(): Promise<CheckoutRecord[]> {
-  const res = await api.get<CheckoutRecord[]>(`/checkouts/}`);
+  const res = await api.get<CheckoutRecord[]>(`/checkouts/`);
   return res.data;
 }
 
