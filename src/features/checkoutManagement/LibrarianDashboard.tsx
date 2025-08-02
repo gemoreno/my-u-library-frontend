@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useCheckouts } from "./useCheckouts"
 import CheckoutRecordTable, { type CheckoutRecordFilters } from "@/components/CheckoutRecordTable";
+import { FaSpinner } from "react-icons/fa";
 
 export default function LibrarianDashboard() {
   const [filters, setFilters] = useState<Partial<CheckoutRecordFilters>>({
@@ -26,13 +27,17 @@ export default function LibrarianDashboard() {
   return (
     <div>
       <h1 className="text-center text-xl font-bold text-blue-800 mb-4">All Checkouts</h1>
-      {filteredReady ? 
+      {loading &&
+      <div className="flex justify-center items-center mt-10">
+        <FaSpinner className="animate-spin text-green-500 text-5xl" />
+      </div>}
+      {filteredReady && 
       <CheckoutRecordTable 
         checkouts={checkouts} 
         filters={filters} 
         onFiltersChange={handleFiltersChange} 
         onReturn={returnBook}
-      /> : <></>}
+      />}
     </div>
   )
 }

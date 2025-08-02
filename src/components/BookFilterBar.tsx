@@ -59,7 +59,7 @@ export default function BookFilterBar({
       {showSearchButton && (
         <Button
           onClick={onSearch}
-          className="btn btn-outline"
+          className="bg-gray-600"
           type="button"
         >
           Search

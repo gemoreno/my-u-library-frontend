@@ -1,14 +1,14 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '@/features/auth/authSlice'
-import { Button } from './ui/button'
 import LoginDialog from './LoginDialog'
 import { ROUTES, USER_ROLES } from '@/constants'
 import NavButton from './NavButton'
-
+import AddUserDialog from './AddUserDialog'
+import { useUser } from '@/features/userManagement/useUser'
 const Layout = () => {
-  const navigate = useNavigate()
-  const userRole = useSelector(selectCurrentUser)?.role
+  const userRole = useSelector(selectCurrentUser)?.role;
+  const { handleAddUser, loading } = useUser();
 
   return (
     <>
@@ -22,7 +22,10 @@ const Layout = () => {
                 <NavButton to={ROUTES.MY_CHECKOUTS} label='My Checkouts' />
             )}
             {userRole === USER_ROLES.LIBRARIAN && (
-                <NavButton to={ROUTES.LIBRARIAN_DASHBOARD} label='Checkouts' />
+                <NavButton to={ROUTES.LIBRARIAN_DASHBOARD} label='Dashboard' />
+            )}
+            {userRole === USER_ROLES.LIBRARIAN && (
+                <AddUserDialog onAddUser={handleAddUser} loading={loading}/>
             )}
             <LoginDialog />
         </div>
