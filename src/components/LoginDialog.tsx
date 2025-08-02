@@ -3,10 +3,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { loginUser } from "@/features/auth/authApi"
+import { loginUser, logoutUser } from "@/features/auth/authApi"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch } from "@/store"
-import { logout, selectIsLoggedIn } from "@/features/auth/authSlice"
+import { selectIsLoggedIn } from "@/features/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 
 export default function LoginDialog() {
@@ -33,7 +33,7 @@ export default function LoginDialog() {
   }
 
   const  handleLogout = () => {
-    dispatch(logout())
+    dispatch(logoutUser())
     navigate('/')
   }
 

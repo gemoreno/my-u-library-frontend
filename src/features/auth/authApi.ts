@@ -1,7 +1,7 @@
 import type { AppDispatch } from "@/store"
-import { loginFailure, loginStart, loginSuccess } from "./authSlice"
+import { loginFailure, loginStart, loginSuccess, logout } from "./authSlice"
 import api from "@/lib/axios"
-import { clearTokens, getRefreshToken, saveCurrentUser, saveTokens } from "./authUtils"
+import { clearCurrentUser, clearTokens, getRefreshToken, saveCurrentUser, saveTokens } from "./authUtils"
 import type { User } from "./types"
 
 export const loginUser = (email: string, password: string) => async (dispatch: AppDispatch) => {
@@ -27,7 +27,8 @@ export const loginUser = (email: string, password: string) => async (dispatch: A
 
 export const logoutUser = () => (dispatch: AppDispatch) => {
   clearTokens();
-  dispatch(logoutUser());
+  clearCurrentUser();
+  dispatch(logout());
 };
 
 
